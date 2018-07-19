@@ -30,66 +30,25 @@ class Employees extends Component {
 	
 	renderEmployees = (employee, index) => {
 		const {empArray} = this.state.employees;
+		let activeValue = false;
 		
-		
+		if(employee.active.data[0] === 1) {
+			activeValue = true;
+		}
 		
 		return (
 			<tr key={index}>
 			  <td>{employee.loginID}</td>
 			  <td>{employee.firstName}</td>
 			  <td>{employee.lastName}</td>
+			  <td>{employee.email}</td>
+			  <td>{employee.phoneNumber}</td>
+			  <td><input type="checkbox" checked={activeValue} /></td>
 			  <td><div className="remove">
 				<a href="#" onClick={() => this.deleteEmployee(index)}><Glyphicon glyph="remove" /></a></div>
 				</td>
 			</tr>
 			);
-	}
-	
-	renderForms = _ => {
-		return (
-			<Form horizontal>
-			  <FormGroup controlId="formHorizontalLoginID">
-				<Col componentClass={ControlLabel} sm={2}>
-				  Login ID
-				</Col>
-				<Col sm={6}>
-				  <FormControl type="loginID" 
-					placeholder="Login ID"
-					onChange={e => this.setState({employee: {...employee, loginID: e.target.value}})}/>
-				</Col>
-			  </FormGroup>
-
-			  <FormGroup controlId="formHorizontalFirstName">
-				<Col componentClass={ControlLabel} sm={2}>
-				  First Name
-				</Col>
-				<Col sm={6}>
-				  <FormControl type="firstName" 
-					placeholder="First Name" 
-					onChange={e => this.setState({employee: {...employee, firstName: e.target.value}})}
-					/>
-				</Col>
-			  </FormGroup>
-			  
-			  <FormGroup controlId="formHorizontalLastName">
-				<Col componentClass={ControlLabel} sm={2}>
-				  Last Name
-				</Col>
-				<Col sm={6}>
-				  <FormControl type="lastName" 
-					placeholder="Last Name" 
-					onChange={e => this.setState({employee: {...employee, lastName: e.target.value}})}
-					/>
-				</Col>
-			  </FormGroup>
-
-			  <FormGroup>
-				<Col smOffset={2} sm={8}>
-				  <Button onClick={this.addEmployee} type="submit">Add Employee</Button>
-				</Col>
-			  </FormGroup>
-			</Form>
-		);
 	}
 	
 	deleteEmployee = (rowId) => {
@@ -135,6 +94,7 @@ class Employees extends Component {
 		
 	}
 	
+	
 	render() {
 		const { employees , employee } = this.state;
 		
@@ -160,6 +120,9 @@ class Employees extends Component {
 									  <th>Username</th>
 									  <th>First Name</th>
 									  <th>Last Name</th>
+									  <th>Email</th>
+									  <th>Phone Number</th>
+									  <th>Active</th>
 									  <th>Delete</th>
 									</tr>
 								  </thead>
@@ -174,8 +137,93 @@ class Employees extends Component {
 								
 								<button onClick={this.addEmployee}>Add New Employee</button>
 								<button onClick={this.modifyEmployee}>Modify Employee</button>
-								 this.renderForms;
-								
+								 
+								<Form horizontal>
+								  <FormGroup controlId="formHorizontalLoginID">
+									<Col componentClass={ControlLabel} sm={2}>
+									  Login ID
+									</Col>
+									<Col sm={3}>
+									  <FormControl type="loginID" 
+										placeholder="Login ID"
+										onChange={e => this.setState({employee: {...employee, loginID: e.target.value}})}/>
+									</Col>
+									<Col componentClass={ControlLabel} sm={2}>
+									  Password
+									</Col>
+									<Col sm={3}>
+									  <FormControl type="password" 
+										placeholder="Password"
+										onChange={e => this.setState({employee: {...employee, password: e.target.value}})}/>
+									</Col>
+								  </FormGroup>
+
+								  <FormGroup controlId="formHorizontalName">
+									<Col componentClass={ControlLabel} sm={2}>
+									  First Name
+									</Col>
+									<Col sm={3}>
+									  <FormControl type="firstName" 
+										placeholder="First Name" 
+										onChange={e => this.setState({employee: {...employee, firstName: e.target.value}})}
+										/>
+									</Col>
+									<Col componentClass={ControlLabel} sm={2}>
+									  Last Name
+									</Col>
+									<Col sm={3}>
+									  <FormControl type="lastName" 
+										placeholder="Last Name" 
+										onChange={e => this.setState({employee: {...employee, lastName: e.target.value}})}
+										/>
+									</Col>
+								  </FormGroup>
+								  
+								  <FormGroup controlId="formHorizontalEmail">
+									<Col componentClass={ControlLabel} sm={2}>
+									  Email
+									</Col>
+									<Col sm={6}>
+									  <FormControl type="email" 
+										placeholder="Email" 
+										onChange={e => this.setState({employee: {...employee, email: e.target.value}})}
+										/>
+									</Col>
+								  </FormGroup>
+								  
+								  <FormGroup controlId="formHorizontalPhoneNumber">
+									<Col componentClass={ControlLabel} sm={2}>
+									  Phone Number
+									</Col>
+									<Col sm={6}>
+									  <FormControl type="phoneNumber" 
+										placeholder="Phone Number" 
+										onChange={e => this.setState({employee: {...employee, phoneNumber: e.target.value}})}
+										/>
+									</Col>
+								  </FormGroup>
+								  
+								  <FormGroup controlId="formHorizontalActive">
+									<Col componentClass={ControlLabel} sm={2}>
+									  Active
+									</Col>
+									<Col sm={6}>
+									   <input type="checkbox" 
+									   onChange={e => { 
+										   let isActive = 1;
+										   if(e.target.checked === false) {isActive = 0}
+										   this.setState({employee: {...employee, active: isActive}})}
+										}
+									   />
+									</Col>
+								  </FormGroup>
+
+								  <FormGroup>
+									<Col smOffset={2} sm={6}>
+									  <Button onClick={this.addEmployee} type="submit">Add Employee</Button>
+									</Col>
+								  </FormGroup>
+								</Form>
 							</div>
 						
 						</Tab.Pane>
