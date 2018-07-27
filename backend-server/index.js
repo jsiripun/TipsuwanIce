@@ -160,6 +160,9 @@ app.get('/customers', (req, res) => {
 			res.status(400);
 			return res.send(err)
 		} else {
+			for (let i = 0; i < results.length; i++) {
+				results[i].active = results[i].active[0];
+			}
 			return res.json({
 				data: results
 			})
@@ -180,7 +183,7 @@ app.get('/customers/add', (req, res) => {
 		phoneNumber = "";
 	}
 	const INSERT_CUSTOMERS_QUERY = `INSERT INTO customers (customerID, active, firstName, lastName, email, phoneNumber, outstandingMoneyBalance, outstandingBagBalance) VALUES ('${customerID}', ${active}, '${firstName}', '${lastName}', '${email}', '${phoneNumber}', '${outstandingBagBalance}', '${outstandingMoneyBalance}')`;
-	connection.query(INSERT_EMPLOYEE_QUERY, (err, results) => {
+	connection.query(INSERT_CUSTOMERS_QUERY, (err, results) => {
 		if(err) {
 			res.status(400);
 			return res.send(err);
@@ -202,8 +205,8 @@ app.get('/customers/modify', (req, res) => {
 	if (typeof phoneNumber === 'undefined') {
 		phoneNumber = "";
 	}
-	const MODIFY_EMPLOYEE_QUERY = `UPDATE customers SET active= ${active}, firstName='${firstName}', lastName='${lastName}', email='${email}', phoneNumber='${phoneNumber}, outstandingMoneyBalance='${outstandingMoneyBalance}', outstandingBagBalance='${outstandingBagBalance}' WHERE customerID = '${customerID}'`;
-	connection.query(MODIFY_EMPLOYEE_QUERY, (err, results) => {
+	const MODIFY_CUSTOMER_QUERY = `UPDATE customers SET active= ${active}, firstName='${firstName}', lastName='${lastName}', email='${email}', phoneNumber='${phoneNumber}', outstandingMoneyBalance='${outstandingMoneyBalance}', outstandingBagBalance='${outstandingBagBalance}' WHERE customerID = '${customerID}'`;
+	connection.query(MODIFY_CUSTOMER_QUERY, (err, results) => {
 		if(err) {
 			res.status(400);
 			return res.send(err);
