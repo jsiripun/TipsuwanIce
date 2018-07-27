@@ -1,28 +1,27 @@
 import React, { Component } from 'react';
-import { FormGroup, Form, Checkbox, ControlLabel, FormControl, HelpBlock, Table, Tab, Row, Col, Nav, NavItem, Glyphicon, Button } from 'react-bootstrap';
+import { FormGroup, Form, Grid, Checkbox, ControlLabel, FormControl, HelpBlock, Table, Tab, Row, Col, Nav, NavItem, Glyphicon, Button } from 'react-bootstrap';
 
 class Employees extends Component {
-	
+/*
+======================== GENERAL EMPLOYEE SECTION =========================
+*/	
 	constructor(props) {
 		super(props);
 			this.state = {
 			employees: [],
 			employee: {
-				loginID: 'sample_employee',
-				password: 'password',
+				loginID: '',
+				password: '',
 				active: 1,
-				firstName: 'first_name',
-				lastName: 'last_name',
-				email: 'email',
-				phoneNumber: '123-456-7890',
+				firstName: '',
+				lastName: '',
+				email: '',
+				phoneNumber: '',
 			},
 			key: "view"
 		}
 		this.handleSelect = this.handleSelect.bind(this);
-		this.handleChangeFirstName = this.handleChangeFirstName.bind(this);
-		this.handleChangeLastName = this.handleChangeLastName.bind(this);
 	}
-	
 	
 	componentDidMount() {
 		this.getEmployees();
@@ -57,102 +56,24 @@ class Employees extends Component {
 			);
 	}
 	
-	deleteEmployee = (rowId) => {
-    const arrayCopy = this.state.employees;
-	const removed = this.state.employees.splice(rowId, 1);
-	
-	
-	fetch(`http://localhost:4000/employees/delete?loginID=${removed[0].loginID}`)
-			.then(this.getEmployees)
-			.catch(err => console.error(err));
-	
-  };
-	
-	addEmployee = _ => {
-		const { employee } = this.state;
-		let empExists = this.state.employees.some( emp => emp['loginID'] === employee.loginID );
-		
-		if (empExists) {
-			alert (`Login ID (${employee.loginID}) already exists, please choose a different Login ID`);
-			return;
+	handleSelect(key) {
+		// refresh when going back to view
+		if(key === "view") {
+			this.getEmployees();
 		}
-		
-		fetch(`http://localhost:4000/employees/add?loginID=${employee.loginID}&password=${employee.password}&active=${employee.active}&firstName=${employee.firstName}&lastName=${employee.lastName}&email=${employee.email}&phoneNumber=${employee.phoneNumber}`)
-			.then(this.getEmployees)
-			.catch(err => console.error(err));
-			
-		
-		alert(`Employee (${employee.loginID}) added successfully`);
-	}
+		this.setState({ key });
+  }
 	
-	
-	modifyEmployee = (employee) => {
-		
-		
-		fetch(`http://localhost:4000/employees/modify?loginID=${employee.loginID}&password=${employee.password}&active=${employee.active}&firstName=${employee.firstName}&lastName=${employee.lastName}&email=${employee.email}&phoneNumber=${employee.phoneNumber}`)
-			.then(this.getEmployees)
-			.catch(err => console.error(err));
-		
-		alert(`Employee (${employee.loginID}) modified successfully`);
-		
-	}
-	
-	handleChangeFirstName (e, index) {
-		let tempEmp = this.state.employees;
-		tempEmp[index].firstName = e.target.value;
-		this.setState({employee: this.state.employees[index],
-					   employees: tempEmp});
-	}
-	
-	handleChangeLastName (e, index) {
-		let tempEmp = this.state.employees;
-		tempEmp[index].lastName = e.target.value;
-		this.setState({employee: this.state.employees[index],
-					   employees: tempEmp});
-	}
-	
-	renderModifyEmployees = (employee, index) => {
-		
-		let activeValue = false;
-		if(employee.active === 1) {
-			activeValue = true;
-		}
-		
-		return (
-			<tr key={index}>
-			  <td>{employee.loginID}</td>
-			  <td><input type="text" name="firstName" value={this.state.employees[index].firstName} onChange={e => {this.handleChangeFirstName(e, index)}}></input></td>
-			  <td><input type="text" name="lastName" value={this.state.employees[index].lastName} onChange={e => {this.handleChangeLastName(e, index)}}></input></td>
-			  <td><input type="text" name="email" defaultValue={employee.email} onChange={e => {this.setState({employee: {...employee, email: e.target.value}});}}></input></td>
-			  <td><input type="text" name="phoneNumber" defaultValue={employee.phoneNumber} onChange={e => {this.setState({employee: {...employee, phoneNumber: e.target.value}});}}></input></td>
-			  <td><input type="checkbox" 
-					defaultChecked={activeValue}
-				    onChange={e => { 
-					   let isActive = 1;
-					   if(e.target.checked === false) {isActive = 0}
-					   this.setState({employee: {...employee, active: isActive}})}
-					}
-				   /></td>
-			  <td><div className="save">
-				<a href="#" onClick={() => this.modifyEmployee(this.state.employee)}><Glyphicon glyph="floppy-disk" /></a></div>
-				</td>
-			  <td><div className="remove">
-				<a href="#" onClick={() => {let r = window.confirm(`Are you sure you want to delete ${employee.loginID}?`);
-					if (r == true) {
-						this.deleteEmployee(index)
-					}
-					}}><Glyphicon glyph="remove" /></a></div>
-				</td>
-			</tr>
-			);
-	}
-	
+/*
+======================== ADD EMPLOYEE SECTION =========================
+*/
+  
 	renderAddForm = (employee) => {
 		return (
 			<Form horizontal>
 			  <FormGroup controlId="formHorizontalLoginID">
 				<Col componentClass={ControlLabel} sm={2}>
-				  Login ID
+				  Login ID *
 				</Col>
 				<Col sm={3}>
 				  <FormControl type="loginID" 
@@ -160,7 +81,7 @@ class Employees extends Component {
 					onChange={e => this.setState({employee: {...employee, loginID: e.target.value}})}/>
 				</Col>
 				<Col componentClass={ControlLabel} sm={2}>
-				  Password
+				  Password *
 				</Col>
 				<Col sm={3}>
 				  <FormControl type="password" 
@@ -171,7 +92,7 @@ class Employees extends Component {
 
 			  <FormGroup controlId="formHorizontalName">
 				<Col componentClass={ControlLabel} sm={2}>
-				  First Name
+				  First Name *
 				</Col>
 				<Col sm={3}>
 				  <FormControl type="firstName" 
@@ -180,7 +101,7 @@ class Employees extends Component {
 					/>
 				</Col>
 				<Col componentClass={ControlLabel} sm={2}>
-				  Last Name
+				  Last Name *
 				</Col>
 				<Col sm={3}>
 				  <FormControl type="lastName" 
@@ -220,6 +141,7 @@ class Employees extends Component {
 				</Col>
 				<Col sm={1}>
 				   <input type="checkbox" 
+				   defaultChecked="true"
 				   onChange={e => { 
 					   let isActive = 1;
 					   if(e.target.checked === false) {isActive = 0}
@@ -228,9 +150,9 @@ class Employees extends Component {
 				   />
 				</Col>
 			  </FormGroup>
-
+			  
 			  <FormGroup>
-				<Col smOffset={2} sm={6}>
+				<Col smOffset={2} sm={6}> 
 				  <Button onClick={this.addEmployee} type="submit">Add Employee</Button>
 				</Col>
 			  </FormGroup>
@@ -238,91 +160,224 @@ class Employees extends Component {
 		);
 	}
 	
-	handleSelect(key) {
-	// refresh when going back to view
-	if(key === "view") {
-		this.getEmployees();
+	addEmployee = _ => {
+		const { employee } = this.state;
+		let empExists = this.state.employees.some( emp => emp['loginID'] === employee.loginID );
+		
+		if (empExists) {
+			alert (`Login ID (${employee.loginID}) already exists, please choose a different Login ID`);
+			return;
+		}
+		
+		// ensure that all required sections are filled out
+		if (!employee.loginID) {
+			alert("Login ID is required.");
+			return;
+		} else if (!employee.password) {
+			alert("Password is required.");
+			return;
+		} else if (!employee.firstName) {
+			alert("First Name is required.");
+			return;
+		} else if (!employee.lastName) {
+			alert("Last Name is required.");
+			return;
+		}
+		
+		fetch(`http://localhost:4000/employees/add?loginID=${employee.loginID}&password=${employee.password}&active=${employee.active}&firstName=${employee.firstName}&lastName=${employee.lastName}&email=${employee.email}&phoneNumber=${employee.phoneNumber}`)
+			.then(this.getEmployees)
+			.catch(err => console.error(err));
+			
+		
+		alert(`Employee (${employee.loginID}) added successfully`);
 	}
-    this.setState({ key });
-  }
 	
+/*
+======================== MODIFY EMPLOYEE SECTION =========================
+*/
+
+	modifyEmployee = (employee) => {
+		
+		
+		fetch(`http://localhost:4000/employees/modify?loginID=${employee.loginID}&password=${employee.password}&active=${employee.active}&firstName=${employee.firstName}&lastName=${employee.lastName}&email=${employee.email}&phoneNumber=${employee.phoneNumber}`)
+			.then(this.getEmployees)
+			.catch(err => console.error(err));
+		
+		alert(`Employee (${employee.loginID}) modified successfully`);
+		
+	}
+	
+	handleChangeFirstName (e, index) {
+		let tempEmp = this.state.employees;
+		tempEmp[index].firstName = e.target.value;
+		this.setState({employee: this.state.employees[index],
+					   employees: tempEmp});
+	}
+	
+	handleChangeLastName (e, index) {
+		let tempEmp = this.state.employees;
+		tempEmp[index].lastName = e.target.value;
+		this.setState({employee: this.state.employees[index],
+					   employees: tempEmp});
+	}
+	
+	handleChangeEmail (e, index) {
+		let tempEmp = this.state.employees;
+		tempEmp[index].email = e.target.value;
+		this.setState({employee: this.state.employees[index],
+					   employees: tempEmp});
+	}
+	
+	handleChangePhoneNumber (e, index) {
+		let tempEmp = this.state.employees;
+		tempEmp[index].phoneNumber = e.target.value;
+		this.setState({employee: this.state.employees[index],
+					   employees: tempEmp});
+	}
+	
+	handleChangeActive (e, index) {
+		let tempEmp = this.state.employees;
+		
+		let isActive = 1;
+	    if(e.target.checked === false) 
+			{isActive = 0}
+	  
+		tempEmp[index].active = isActive;
+		this.setState({employee: this.state.employees[index],
+					   employees: tempEmp});
+	}
+	
+	handleSaveEmployee (index) {
+		this.setState({employee: this.state.employees[index]}, () => {this.modifyEmployee(this.state.employee)});
+		
+	}
+	
+	deleteEmployee = (rowId) => {
+    const arrayCopy = this.state.employees;
+	const removed = this.state.employees.splice(rowId, 1);
+	
+	
+	fetch(`http://localhost:4000/employees/delete?loginID=${removed[0].loginID}`)
+			.then(this.getEmployees)
+			.catch(err => console.error(err));
+	
+	}
+	
+	renderModifyEmployees = (employee, index) => {
+		
+		let activeValue = false;
+		if(this.state.employees[index].active === 1) {
+			activeValue = true;
+		}
+		
+		return (
+			<tr key={index}>
+			  <td>{employee.loginID}</td>
+			  <td><input type="text" name="firstName" value={this.state.employees[index].firstName} onChange={e => {this.handleChangeFirstName(e, index)}}></input></td>
+			  <td><input type="text" name="lastName" value={this.state.employees[index].lastName} onChange={e => {this.handleChangeLastName(e, index)}}></input></td>
+			  <td><input type="text" name="email" value={this.state.employees[index].email} onChange={e => {this.handleChangeEmail(e, index)}}></input></td>
+			  <td><input type="text" name="phoneNumber" value={this.state.employees[index].phoneNumber} onChange={e => {this.handleChangePhoneNumber(e, index)}}></input></td>
+			  <td><input type="checkbox" 
+					checked={activeValue}
+				    onChange={e => {this.handleChangeActive(e, index)}
+					}
+				   /></td>
+			  <td><div className="save">
+				<a href="#" onClick={() => {
+				let r = window.confirm(`Are you sure you want to save ${employee.loginID}?`);
+					if (r == true) {
+						this.handleSaveEmployee(index);
+					}
+				}}><Glyphicon glyph="floppy-disk" /></a></div>
+				</td>
+			  <td><div className="remove">
+				<a href="#" onClick={() => {let r = window.confirm(`Are you sure you want to delete ${employee.loginID}?`);
+					if (r == true) {
+						this.deleteEmployee(index)
+					}
+					}}><Glyphicon glyph="remove" /></a></div>
+				</td>
+			</tr>
+			);
+	}
+	
+	
+	
+	
+/*
+======================== RENDER =========================
+*/	
 	
 	render() {
 		const { employees , employee } = this.state;
-		
-		
 		
 		return (
 			<div className="Employee">
 				<div><br />EMPLOYEES PAGE<br /><br /></div>
 				
-				<Tab.Container id="left-tabs" activeKey={this.state.key} onSelect={this.handleSelect}>
-				  <Row className="clearfix" >
-					<Col sm={3}>
-					  <Nav bsStyle="pills" stacked >
-						<NavItem eventKey="view">View Employees</NavItem>
-						<NavItem eventKey="add">Add Employees</NavItem>
-						<NavItem eventKey="modify">Modify Employees</NavItem>
-					  </Nav>
-					</Col>
-					<Col sm={9}>
-					  <Tab.Content animation>
-						<Tab.Pane eventKey="view">
-							<div>
-								<Table striped bordered condensed hover responsive>
-								  <thead>
-									<tr>
-									  <th>Username</th>
-									  <th>First Name</th>
-									  <th>Last Name</th>
-									  <th>Email</th>
-									  <th>Phone Number</th>
-									  <th>Active</th>
-									</tr>
-								  </thead>
-								  <tbody>
-									{employees.map(this.renderEmployees)}
-								  </tbody>
-								</Table>
-							</div>
-						</Tab.Pane>
-						<Tab.Pane eventKey="add">
-							<div>
-								 {this.renderAddForm(employee)}
-							</div>
-						
-						</Tab.Pane>
-						<Tab.Pane eventKey="modify">
-							<div>
-								<Table striped bordered condensed hover responsive>
-								  <thead>
-									<tr>
-									  <th>Username</th>
-									  <th>First Name</th>
-									  <th>Last Name</th>
-									  <th>Email</th>
-									  <th>Phone Number</th>
-									  <th>Active</th>
-									  <th>Save</th>
-									  <th>Delete</th>
-									</tr>
-								  </thead>
-								  <tbody>
-									{employees.map(this.renderModifyEmployees)}
-								  </tbody>
-								</Table>
-							</div>
-						</Tab.Pane>
-					  </Tab.Content>
-					</Col>
-				  </Row>
-				</Tab.Container>
-				
-				
-				
-				
-				
-				
+				<Grid fluid={true}>
+					<Tab.Container id="left-tabs" activeKey={this.state.key} onSelect={this.handleSelect}>
+					  <Row className="clearfix" >
+						<Col sm={3}>
+						  <Nav bsStyle="pills" stacked >
+							<NavItem eventKey="view">View Employees</NavItem>
+							<NavItem eventKey="add">Add Employees</NavItem>
+							<NavItem eventKey="modify">Modify Employees</NavItem>
+						  </Nav>
+						</Col>
+						<Col sm={9}>
+						  <Tab.Content animation>
+							<Tab.Pane eventKey="view">
+								<div>
+									<Table striped bordered condensed hover responsive>
+									  <thead>
+										<tr>
+										  <th>Username</th>
+										  <th>First Name</th>
+										  <th>Last Name</th>
+										  <th>Email</th>
+										  <th>Phone Number</th>
+										  <th>Active</th>
+										</tr>
+									  </thead>
+									  <tbody>
+										{employees.map(this.renderEmployees)}
+									  </tbody>
+									</Table>
+								</div>
+							</Tab.Pane>
+							<Tab.Pane eventKey="add">
+								<div>
+									 {this.renderAddForm(employee)}
+								</div>
+							
+							</Tab.Pane>
+							<Tab.Pane eventKey="modify">
+								<div>
+									<Table striped bordered condensed hover responsive>
+									  <thead>
+										<tr>
+										  <th>Username</th>
+										  <th>First Name</th>
+										  <th>Last Name</th>
+										  <th>Email</th>
+										  <th>Phone Number</th>
+										  <th>Active</th>
+										  <th>Save</th>
+										  <th>Delete</th>
+										</tr>
+									  </thead>
+									  <tbody>
+										{employees.map(this.renderModifyEmployees)}
+									  </tbody>
+									</Table>
+								</div>
+							</Tab.Pane>
+						  </Tab.Content>
+						</Col>
+					  </Row>
+					</Tab.Container>
+				</Grid>
 			</div>
 		)
 	}

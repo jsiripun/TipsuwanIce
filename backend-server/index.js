@@ -83,7 +83,6 @@ app.get('/employees', (req, res) => {
 		} else {
 			for (let i = 0; i < results.length; i++) {
 				results[i].active = results[i].active[0];
-				console.log(results[i].active);
 			}
 			return res.json({
 				data: results
