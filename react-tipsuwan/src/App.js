@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import CustomNavbar from './components/CustomNavbar.js';
 import Footer from './components/Footer.js';
+import Home from './components/Home.js';
 import Customers from './components/Customers.js';
 import Employees from './components/Employees.js';
 
@@ -51,6 +52,7 @@ class App extends Component {
 		<Router>
 		<div>
 			<CustomNavbar />
+			<Route exact path="/" component={Home} />
 			<Route path="/customers" component={Customers} />
 			<Route path="/employees" component={Employees} />
 		</div>
