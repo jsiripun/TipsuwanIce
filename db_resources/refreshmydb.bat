@@ -23,6 +23,14 @@ CREATE TABLE Customers (
     outstandingMoneyBalance FLOAT(25, 2) NOT NULL,
     outstandingBagBalance INT(20) NOT NULL
     );
+
+CREATE TABLE Inventory(
+    inventoryID  INT(20) NOT NULL PRIMARY KEY,   
+    active bit NOT NULL,			-- always set it to "Active" (=1) for now			
+    name VARCHAR(50) NOT NULL,
+    price FLOAT(25, 2) NOT NULL,
+    quantity INT(20) NOT NULL
+    );
     
 CREATE TABLE Roles (
     -- Valid roles are:
