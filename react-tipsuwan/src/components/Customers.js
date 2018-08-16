@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { FormGroup, Form, Grid, Checkbox, ControlLabel, FormControl, HelpBlock, Table, Tab, Row, Col, Nav, NavItem, Glyphicon, Button } from 'react-bootstrap';
+import './Customers.css';
 
 class Customers extends Component {
 /*
@@ -308,8 +309,8 @@ class Customers extends Component {
 			  <td><input type="text" name="lastName" value={this.state.customers[index].lastName} onChange={e => {this.handleChangeLastName(e, index)}}></input></td>
 			  <td><input type="text" name="email" value={this.state.customers[index].email} onChange={e => {this.handleChangeEmail(e, index)}}></input></td>
 			  <td><input type="text" name="phoneNumber" value={this.state.customers[index].phoneNumber} onChange={e => {this.handleChangePhoneNumber(e, index)}}></input></td>
-			  <td><input type="number" name="outstandingMoneyBalance" value={this.state.customers[index].outstandingMoneyBalance} onChange={e => {this.handleChangeOutstandingMoneyBalance(e, index)}}></input></td>
-			  <td><input type="number" name="outstandingBagBalance" value={this.state.customers[index].outstandingBagBalance} onChange={e => {this.handleChangeOutstandingBagBalance(e, index)}}></input></td>
+			  <td><input className="moneyModifyInput" type="number" name="outstandingMoneyBalance" value={this.state.customers[index].outstandingMoneyBalance} onChange={e => {this.handleChangeOutstandingMoneyBalance(e, index)}}></input></td>
+			  <td><input className="bagModifyInput" type="number" name="outstandingBagBalance" value={this.state.customers[index].outstandingBagBalance} onChange={e => {this.handleChangeOutstandingBagBalance(e, index)}}></input></td>
 			  <td><input type="checkbox" 
 					checked={activeValue}
 				    onChange={e => {this.handleChangeActive(e, index)}
@@ -317,7 +318,7 @@ class Customers extends Component {
 				   /></td>
 			  <td><div className="save">
 				<a href="#" onClick={() => {
-				let r = window.confirm(`Are you sure you want to save ${customer.customerID}?`);
+				let r = window.confirm(`Are you sure you want to save Customer ID #${customer.customerID}?`);
 					if (r == true) {
 						this.handleSaveCustomer(index);
 					}
@@ -349,14 +350,14 @@ class Customers extends Component {
 			<Grid fluid={true}>
 					<Tab.Container id="left-tabs" activeKey={this.state.key} onSelect={this.handleSelect}>
 					  <Row className="clearfix" >
-						<Col sm={3}>
+						<Col sm={2}>
 						  <Nav bsStyle="pills" stacked >
 							<NavItem eventKey="view">View Customers</NavItem>
 							<NavItem eventKey="add">Add Customers</NavItem>
 							<NavItem eventKey="modify">Modify Customers</NavItem>
 						  </Nav>
 						</Col>
-						<Col sm={9}>
+						<Col sm={10}>
 						  <Tab.Content animation>
 							<Tab.Pane eventKey="view">
 								<div>

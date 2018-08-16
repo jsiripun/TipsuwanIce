@@ -318,14 +318,14 @@ class Employees extends Component {
 				<Grid fluid={true}>
 					<Tab.Container id="left-tabs" activeKey={this.state.key} onSelect={this.handleSelect}>
 					  <Row className="clearfix" >
-						<Col sm={3}>
+						<Col sm={2}>
 						  <Nav bsStyle="pills" stacked >
 							<NavItem eventKey="view">View Employees</NavItem>
 							<NavItem eventKey="add">Add Employees</NavItem>
 							<NavItem eventKey="modify">Modify Employees</NavItem>
 						  </Nav>
 						</Col>
-						<Col sm={9}>
+						<Col sm={10}>
 						  <Tab.Content animation>
 							<Tab.Pane eventKey="view">
 								<div>
