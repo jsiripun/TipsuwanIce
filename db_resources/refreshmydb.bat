@@ -24,6 +24,15 @@ CREATE TABLE Customers (
     outstandingBagBalance INT(20) NOT NULL
     );
 
+CREATE TABLE Drivers(
+    driverID  INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    active bit NOT NULL,			-- always set it to "Active" (=1) for now			
+    firstName VARCHAR(50) NOT NULL,
+    lastName VARCHAR(50) NOT NULL,
+    email VARCHAR(50),
+    phoneNumber VARCHAR(20)
+    );
+
 CREATE TABLE Inventory(
     inventoryID  INT(20) NOT NULL PRIMARY KEY,   
     active bit NOT NULL,			-- always set it to "Active" (=1) for now			
@@ -31,6 +40,56 @@ CREATE TABLE Inventory(
     price FLOAT(25, 2) NOT NULL,
     quantity INT(20) NOT NULL
     );
+
+
+CREATE TABLE Invoices (
+        
+	invoiceID INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+
+        customerID INT(20) NOT NULL,
+        bagsTaken INT UNSIGNED NOT NULL,
+
+        bagsReturned INT UNSIGNED NOT NULL,
+
+        amountDue DOUBLE PRECISION NOT NULL,
+
+        amountPaid DOUBLE PRECISION NOT NULL,
+
+        status VARCHAR(25) NOT NULL,		--  Values: UNPAID, PAID, DELETED <-- invoice life cycle
+
+        driverID INT UNSIGNED NOT NULL,
+
+        shipmentNum INT UNSIGNED NOT NULL, -- (Ga)
+
+        invoiceDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,		-- Insert: current timestamp.  Update: No effect.
+
+        index invoice_customer_index(customerID),
+
+
+	index invoice_driver_index(driverID),
+        CONSTRAINT customer_foreign_key FOREIGN KEY (customerID) references customers(customerID),
+
+
+        CONSTRAINT driver_foreign_key FOREIGN KEY (driverID) references customers(driverID)
+);
+
+CREATE TABLE Invoice_Details (
+
+        invoiceDetailsID INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+
+        invoiceID INT UNSIGNED NOT NULL,
+
+        inventoryID INT UNSIGNED NOT NULL,
+
+        quantity INT UNSIGNED NOT NULL,
+
+        amount DOUBLE PRECISION NOT NULL,	-- amount = quantity * inventory price
+
+        index invoiceDetails_invoice_index(`invoiceID`),
+
+  	foreign key (`invoiceID`) references invoices(`invoiceID`) on delete cascade
+   
+);
     
 CREATE TABLE Roles (
     -- Valid roles are:
@@ -82,6 +141,11 @@ insert into Customers (customerID, ACTIVE, firstName, lastName, email, phoneNumb
 insert into Customers (customerID, ACTIVE, firstName, lastName, email, phoneNumber, outstandingMoneyBalance, outstandingBagBalance) values ('3', 1, 'Hurricane', 'Katrina', '', '', 0, 0);
 
 
+insert into Drivers (ACTIVE, firstName, lastName, email, phoneNumber) values (1, 'Hoke', 'Daisy', 'email@email.com', '1234567');
+insert into Drivers (ACTIVE, firstName, lastName, email, phoneNumber) values (1, 'Lady', 'Who', 'lady@email.com', '1288897');
+insert into Drivers (ACTIVE, firstName, lastName, email, phoneNumber) values (1, 'Boruto', 'Uzumaki', 'believe@it2.com', '44444455');
+
+
 INSERT INTO Roles (role_name) VALUES ('Sale');
 INSERT INTO Roles (role_name) VALUES ('Accounting');
 INSERT INTO Roles (role_name) VALUES ('Admin');
@@ -95,3 +159,11 @@ INSERT INTO Employees_Roles (loginID, role_name) VALUES ('admin1', 'Admin');
 INSERT INTO Employees_Roles (loginID, role_name) VALUES ('superadmin1', 'SuperAdmin');
 INSERT INTO Employees_Roles (loginID, role_name) VALUES ('other1', 'Others');
 
+
+INSERT INTO Inventory (inventoryID, active, name, price, quantity) values (1, 1, 'Small Cubes', 10, 100);
+
+INSERT INTO Inventory (inventoryID, active, name, price, quantity) values (2, 1, 'Large Cubes', 15, 180);
+
+INSERT INTO Inventory (inventoryID, active, name, price, quantity) values (3, 1, 'Chips', 8, 90);
+
+INSERT INTO Inventory (inventoryID, active, name, price, quantity) values (4, 1, 'Block', 60, 50);
