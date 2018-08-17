@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormGroup, Form, Grid, Checkbox, ControlLabel, FormControl, HelpBlock, Table, Tab, Row, Col, Nav, NavItem, Glyphicon, Button } from 'react-bootstrap';
+import { FormGroup, Form, Grid, ControlLabel, FormControl, Table, Tab, Row, Col, Nav, NavItem, Glyphicon, Button, Jumbotron } from 'react-bootstrap';
 import './Customers.css';
 
 class Customers extends Component {
@@ -39,7 +39,6 @@ class Customers extends Component {
 	
 	renderCustomers = (customer, index) => {
 		
-		const {cusArray} = this.state.customers;
 		let activeValue = false;
 		
 		if(customer.active === 1) {
@@ -201,7 +200,7 @@ class Customers extends Component {
 			alert("Last Name is required.");
 			return;
 		}
-		console.log(`http://localhost:4000/customers/add?customerID=${customer.customerID}&active=${customer.active}&firstName=${customer.firstName}&lastName=${customer.lastName}&email=${customer.email}&phoneNumber=${customer.phoneNumber}&outstandingMoneyBalance=${customer.outstandingMoneyBalance}&outstandingBagBalance=${customer.outstandingBagBalance}`);
+		
 		fetch(`http://localhost:4000/customers/add?customerID=${customer.customerID}&active=${customer.active}&firstName=${customer.firstName}&lastName=${customer.lastName}&email=${customer.email}&phoneNumber=${customer.phoneNumber}&outstandingMoneyBalance=${customer.outstandingMoneyBalance}&outstandingBagBalance=${customer.outstandingBagBalance}`)
 			.then(this.getCustomers)
 			.catch(err => console.error(err));
@@ -216,7 +215,6 @@ class Customers extends Component {
 
 	modifyCustomer = (customer) => {
 		
-		console.log(`http://localhost:4000/customers/modify?customerID=${customer.customerID}&active=${customer.active}&firstName=${customer.firstName}&lastName=${customer.lastName}&email=${customer.email}&phoneNumber=${customer.phoneNumber}&outstandingBagBalance=${customer.outstandingBagBalance}&outstandingMoneyBalance=${customer.outstandingMoneyBalance}`);
 		fetch(`http://localhost:4000/customers/modify?customerID=${customer.customerID}&active=${customer.active}&firstName=${customer.firstName}&lastName=${customer.lastName}&email=${customer.email}&phoneNumber=${customer.phoneNumber}&outstandingBagBalance=${customer.outstandingBagBalance}&outstandingMoneyBalance=${customer.outstandingMoneyBalance}`)
 			.then(this.getCustomers)
 			.catch(err => console.error(err));
@@ -285,7 +283,6 @@ class Customers extends Component {
 	}
 	
 	deleteCustomer = (rowId) => {
-    const arrayCopy = this.state.customers;
 	const removed = this.state.customers.splice(rowId, 1);
 	
 	
@@ -317,16 +314,16 @@ class Customers extends Component {
 					}
 				   /></td>
 			  <td><div className="save">
-				<a href="#" onClick={() => {
+				<a onClick={() => {
 				let r = window.confirm(`Are you sure you want to save Customer ID #${customer.customerID}?`);
-					if (r == true) {
+					if (r === true) {
 						this.handleSaveCustomer(index);
 					}
 				}}><Glyphicon glyph="floppy-disk" /></a></div>
 				</td>
 			  <td><div className="remove">
-				<a href="#" onClick={() => {let r = window.confirm(`Are you sure you want to delete ${customer.customerID}?`);
-					if (r == true) {
+				<a onClick={() => {let r = window.confirm(`Are you sure you want to delete ${customer.customerID}?`);
+					if (r === true) {
 						this.deleteCustomer(index)
 					}
 					}}><Glyphicon glyph="remove" /></a></div>
@@ -345,8 +342,7 @@ class Customers extends Component {
 		
 		return (
 		<div className="Customers">
-			<div><br />CUSTOMERS PAGE<br /><br /></div>
-			
+			<Jumbotron className="titleJumbotron"> CUSTOMERS </Jumbotron>
 			<Grid fluid={true}>
 					<Tab.Container id="left-tabs" activeKey={this.state.key} onSelect={this.handleSelect}>
 					  <Row className="clearfix" >

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { FormGroup, Form, Grid, Checkbox, ControlLabel, FormControl, HelpBlock, Table, Tab, Row, Col, Nav, NavItem, Glyphicon, Button } from 'react-bootstrap';
+import { FormGroup, Form, Grid, ControlLabel, FormControl, Table, Tab, Row, Col, Nav, NavItem, Glyphicon, Button, Jumbotron } from 'react-bootstrap';
 
-class Employees extends Component {
+class Employees_General extends Component {
 /*
 ======================== GENERAL EMPLOYEE SECTION =========================
 */	
@@ -37,7 +37,6 @@ class Employees extends Component {
 	
 	renderEmployees = (employee, index) => {
 		
-		const {empArray} = this.state.employees;
 		let activeValue = false;
 		
 		if(employee.active === 1) {
@@ -71,7 +70,7 @@ class Employees extends Component {
 	renderAddForm = (employee) => {
 		return (
 			<Form horizontal>
-			  <FormGroup controlId="formHorizontalLoginID">
+			  <FormGroup >
 				<Col componentClass={ControlLabel} sm={2}>
 				  Login ID *
 				</Col>
@@ -90,7 +89,7 @@ class Employees extends Component {
 				</Col>
 			  </FormGroup>
 
-			  <FormGroup controlId="formHorizontalName">
+			  <FormGroup >
 				<Col componentClass={ControlLabel} sm={2}>
 				  First Name *
 				</Col>
@@ -253,7 +252,6 @@ class Employees extends Component {
 	}
 	
 	deleteEmployee = (rowId) => {
-    const arrayCopy = this.state.employees;
 	const removed = this.state.employees.splice(rowId, 1);
 	
 	
@@ -283,16 +281,16 @@ class Employees extends Component {
 					}
 				   /></td>
 			  <td><div className="save">
-				<a href="#" onClick={() => {
+				<a onClick={() => {
 				let r = window.confirm(`Are you sure you want to save ${employee.loginID}?`);
-					if (r == true) {
+					if (r === true) {
 						this.handleSaveEmployee(index);
 					}
 				}}><Glyphicon glyph="floppy-disk" /></a></div>
 				</td>
 			  <td><div className="remove">
-				<a href="#" onClick={() => {let r = window.confirm(`Are you sure you want to delete ${employee.loginID}?`);
-					if (r == true) {
+				<a onClick={() => {let r = window.confirm(`Are you sure you want to delete ${employee.loginID}?`);
+					if (r === true) {
 						this.deleteEmployee(index)
 					}
 					}}><Glyphicon glyph="remove" /></a></div>
@@ -312,9 +310,8 @@ class Employees extends Component {
 		const { employees , employee } = this.state;
 		
 		return (
-			<div className="Employee">
-				<div><br />EMPLOYEES PAGE<br /><br /></div>
-				
+			<div className="EmployeeGeneral">
+				<Jumbotron className="titleJumbotron"> GENERAL EMPLOYEES </Jumbotron>
 				<Grid fluid={true}>
 					<Tab.Container id="left-tabs" activeKey={this.state.key} onSelect={this.handleSelect}>
 					  <Row className="clearfix" >
@@ -383,4 +380,4 @@ class Employees extends Component {
 	}
 }
 
-export default Employees;
+export default Employees_General;

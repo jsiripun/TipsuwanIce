@@ -26,3 +26,10 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.titleJumbotron {
+	background-color: #8fa5c9;
+	font-size: 30px;
+	color: white;
+	letter-spacing: 10px;
+}

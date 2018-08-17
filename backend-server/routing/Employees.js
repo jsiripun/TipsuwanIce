@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
 
 router.get('/add', (req, res) => {
 	let {loginID, password, active, firstName, lastName, email, phoneNumber } = req.query;
-	console.log(loginID, password, active, firstName, lastName, email, phoneNumber);
+	
 	if (typeof loginID === 'undefined' || typeof password === 'undefined' || typeof active === 'undefined' || typeof firstName === 'undefined' || typeof lastName === 'undefined') {
 		return res.send("Need to enter loginID, password, active, firstName, and lastName");
 	}
@@ -51,7 +51,7 @@ router.get('/add', (req, res) => {
 
 router.get('/modify', (req, res) => {
 	let {loginID, password, active, firstName, lastName, email, phoneNumber } = req.query;
-	console.log(loginID, password, active, firstName, lastName, email, phoneNumber);
+	
 	if (typeof loginID === 'undefined' || typeof password === 'undefined' || typeof active === 'undefined' || typeof firstName === 'undefined' || typeof lastName === 'undefined') {
 		return res.send("Need to enter loginID, password, active, firstName, and lastName");
 	}

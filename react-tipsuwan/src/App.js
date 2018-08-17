@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import CustomNavbar from './components/CustomNavbar.js';
 import Footer from './components/Footer.js';
 import Home from './components/Home.js';
 import Customers from './components/Customers.js';
-import Employees from './components/Employees.js';
+import EmployeesDriver from './components/Employees_Drivers.js';
+import EmployeesGeneral from './components/Employees_General.js';
 
 
 class App extends Component {
-	
+	/*
 	state = {
 		roles: [],
 		role: {
@@ -43,9 +44,9 @@ class App extends Component {
 			.then(this.getRoles)
 			.catch(err => console.error(err));
 	}
-	
+	*/
   render() {
-	const { roles , role } = this.state;
+//const { roles , role } = this.state;
 	
     return (
       <div className="App">
@@ -54,7 +55,8 @@ class App extends Component {
 			<CustomNavbar />
 			<Route exact path="/" component={Home} />
 			<Route path="/customers" component={Customers} />
-			<Route path="/employees" component={Employees} />
+			<Route path="/employees/driver" component={EmployeesDriver} />
+			<Route path="/employees/general" component={EmployeesGeneral} />
 		</div>
 		</Router>
 

@@ -2,6 +2,7 @@ const express = require('express');
 const roles = require('./routing/Roles.js');
 const employees = require('./routing/Employees.js');
 const customers = require('./routing/Customers.js');
+const drivers = require('./routing/Drivers.js');
 
 const app = express();
 
@@ -28,6 +29,12 @@ app.use('/employees', employees)
 -- find more details in /routing/customers.js
 */
 app.use('/customers', customers)
+
+/*
+======================== DRIVERS =========================
+-- find more details in /routing/drivers.js
+*/
+app.use('/drivers', drivers)
 
 
 app.listen(4000, () => {
